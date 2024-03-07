@@ -1,4 +1,4 @@
-FROM node:latest as build
+FROM node:20.11.1-slim as build
 
 WORKDIR /usr/local/app
 
@@ -10,7 +10,7 @@ RUN npm run build
 
 FROM nginx:mainline-alpine3.18-perl
 
-COPY --from=build /usr/local/app/dist/sample-angular-app /usr/share/nginx/html
+COPY --from=build /usr/local/app/dist/pwa-prueba/browser /usr/share/nginx/html
 COPY nginx-selfsigned.crt /etc/nginx/ssl/nginx-selfsigned.crt
 COPY nginx-selfsigned.key /etc/nginx/ssl/nginx-selfsigned.key
 
