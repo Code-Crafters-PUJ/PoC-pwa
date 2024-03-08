@@ -1,6 +1,21 @@
 version: '3'
 services:
-  pwa:
-    build: .
+  nginxproxymanager:
+    image: 'jc21/nginx-proxy-manager:2'
+    container_name: nginxproxymanager
+    restart: unless-stopped
     ports:
-      - "443:443"
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - nginxproxymanager_data:/data
+      - nginxproxymanager_letsencrypt:/etc/letsencrypt
+  pwa:
+    container_name: pwa
+    build: .
+    expose:
+      - 80
+volumes:
+  nginxproxymanager_data:
+  nginxproxymanager_letsencrypt:

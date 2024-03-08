@@ -1,0 +1,13 @@
+.gitignore
+.git/
+README.md
+
+node_modules/
+dist/
+docs/
+
+.editorconfig
+.vscode/
+
+Dockerfile
+docker-compose.yml

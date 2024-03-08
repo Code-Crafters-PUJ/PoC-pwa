@@ -1,19 +1,20 @@
-FROM node:20.11.1-slim as build
+FROM node:20.11.1-alpine3.18 as build
 
 WORKDIR /usr/local/app
 
-COPY ./ /usr/local/app/
+COPY ./package.json .
+COPY ./package-lock.json .
 
 RUN npm install
 
-RUN npm run build
+COPY . .
+
+RUN npm run build --prod
 
 FROM nginx:mainline-alpine3.18-perl
 
 COPY --from=build /usr/local/app/dist/pwa-prueba/browser /usr/share/nginx/html
-COPY nginx-selfsigned.crt /etc/nginx/ssl/nginx-selfsigned.crt
-COPY nginx-selfsigned.key /etc/nginx/ssl/nginx-selfsigned.key
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 443
+EXPOSE 80
